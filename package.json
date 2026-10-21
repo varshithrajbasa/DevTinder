@@ -1,0 +1,24 @@
+{
+  "name": "devtinder",
+  "version": "1.0.0",
+  "description": "Tinder for Developers backend",
+  "keywords": [
+    "Nodejs",
+    "Node.js",
+    "Expressjs",
+    "Express.js",
+    "MongoDB",
+    "mongoose"
+  ],
+  "author": "Varshith Raj Basa",
+  "type": "commonjs",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^4.22.3"
+  }
+}

@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-require("./config/database");
+const connectDB = require("./config/database");
 
 const express = require("express");
 const app = express();
@@ -22,6 +22,11 @@ app.get('/about', (req, res) => {
   res.send("This is the about page.");
 });
 
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
+connectDB().then(() => {
+    console.log("Connected to MongoDB");
+
+
+}).catch((err) => {
+    console.error("Error connecting to MongoDB:", err);
 });
+

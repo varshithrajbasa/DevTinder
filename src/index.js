@@ -4,28 +4,45 @@ const connectDB = require("./config/database");
 
 const express = require("express");
 const app = express();
+app.use(express.json());
 
-app.use("/", (req, res, next) => {
-  console.log("Request 1");
-  res.send("Request 1");
-  next();
-}, (req, res, next) => {
-console.log("Request 2");
-res.send("Request 2");
-})
+const User = require("./models/user");
 
 app.get("/", (req, res) => {
-  res.send("Hello, World!");
+    res.send("Hello, World!");
 });
 
-app.get('/about', (req, res) => {
-  res.send("This is the about page.");
+app.post("/signup", async (req, res) => {
+    try {
+        const { firstName, lastName, email, password, age, gender } = req.body;
+        const user = new User({
+            firstName,
+            lastName,
+            email,
+            password,
+            age,
+            gender,
+        });
+        await user.save();
+        res.status(201).json(user);
+    } catch (err) {
+        console.error("Error saving user:", err);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
 });
 
-connectDB().then(() => {
-    console.log("Connected to MongoDB");
-
-
-}).catch((err) => {
-    console.error("Error connecting to MongoDB:", err);
+app.get("/users", async (req, res) => {
+    const data = await User.find();
+    res.json(data);
 });
+
+connectDB()
+    .then(() => {
+        console.log("Connected to MongoDB");
+        app.listen(3000, () => {
+            console.log("Server is running on port 3000");
+        });
+    })
+    .catch((err) => {
+        console.error("Error connecting to MongoDB:", err);
+    });

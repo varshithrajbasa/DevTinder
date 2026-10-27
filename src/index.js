@@ -31,9 +31,29 @@ app.post("/signup", async (req, res) => {
     }
 });
 
+//GET all users
 app.get("/users", async (req, res) => {
+    try {
     const data = await User.find();
-    res.json(data);
+        res.json(data);
+    } catch (err) {
+        console.error("Error fetching users:", err);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+//Get User by id
+app.get("/user/:id", async (req, res) => {
+    try {
+        const data = await User.findById(req.params.id);
+        if (!data) {
+            return res.status(404).json({ error: "User not found" });
+        }
+        res.json(data);
+    } catch (err) {
+        console.error("Error fetching user:", err);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
 });
 
 connectDB()

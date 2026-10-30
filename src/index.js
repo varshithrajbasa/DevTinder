@@ -14,11 +14,11 @@ app.get("/", (req, res) => {
 
 app.post("/signup", async (req, res) => {
     try {
-        const { firstName, lastName, email, password, age, gender } = req.body;
+        const { firstName, lastName, emailId, password, age, gender } = req.body;
         const user = new User({
             firstName,
             lastName,
-            email,
+            emailId,
             password,
             age,
             gender,
@@ -27,6 +27,9 @@ app.post("/signup", async (req, res) => {
         res.status(201).json(user);
     } catch (err) {
         console.error("Error saving user:", err);
+        if(err.code === 11000) {
+            res.status(400).json({message: "Email Already exists"});
+        }
         res.status(500).json({ error: "Internal Server Error" });
     }
 });

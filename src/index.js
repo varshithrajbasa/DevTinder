@@ -1,37 +1,19 @@
 require("dotenv").config();
 
 const connectDB = require("./config/database");
-
 const express = require("express");
+const cookieParser = require("cookie-parser");
+const authRoutes = require("./routes/authRoutes");
+const User = require("./models/user");
+
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 
-const User = require("./models/user");
+app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
     res.send("Hello, World!");
-});
-
-app.post("/signup", async (req, res) => {
-    try {
-        const { firstName, lastName, emailId, password, age, gender } = req.body;
-        const user = new User({
-            firstName,
-            lastName,
-            emailId,
-            password,
-            age,
-            gender,
-        });
-        await user.save();
-        res.status(201).json(user);
-    } catch (err) {
-        console.error("Error saving user:", err);
-        if(err.code === 11000) {
-            res.status(400).json({message: "Email Already exists"});
-        }
-        res.status(500).json({ error: "Internal Server Error" });
-    }
 });
 
 //GET all users

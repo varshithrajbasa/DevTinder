@@ -6,3 +6,5 @@ const validation = (data, requiredFields) => {
   }
   return true;
 };
+
+module.exports = validation;

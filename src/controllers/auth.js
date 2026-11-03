@@ -1,7 +1,6 @@
 const User = require("../models/user");
 const validation = require("../utils/validation");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 
 const signup = async (req, res) => {
     try {
@@ -35,7 +34,7 @@ const signup = async (req, res) => {
             gender,
             skills,
         });
-        await user.save();
+        await User.save();
         res.status(201).json(user);
     } catch (err) {
         console.error("Error saving user:", err);
@@ -53,13 +52,11 @@ const login = async (req, res) => {
         if (!user) {
             return res.status(404).json({ error: "Invalid email or password" });
         }
-        const isMatch = await bcrypt.compare(password, user.password);
+        const isMatch = await user.validatePassword(password);
         if (!isMatch) {
             return res.status(401).json({ error: "Invalid email or password" });
         }
-        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-            expiresIn: "8h",
-        });
+        const token = await user.getToken();
         res.cookie("token", token, {
             httpOnly: true,
             maxAge: 8 * 60 * 60 * 1000,

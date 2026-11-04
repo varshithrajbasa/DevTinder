@@ -1,22 +1,9 @@
 const JWT = require("jsonwebtoken");
 const User = require("../models/user");
 
-const profile = (async (req, res) => {
+const viewProfile = (async (req, res) => {
     try {
-        const token = req.cookies.token;
-        if (!token) {
-            return res.status(401).json({ error: "Unauthorized" });
-        }
-        const decoded = await JWT.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
-            if (err) {
-                return res.status(401).json({ error: "Unauthorized" });
-            }
-            return decoded;
-        });
-        const user = await User.findById(decoded._id);
-        if (!user) {
-            return res.status(404).json({ error: "User not found" });
-        }
+        const user = req.user;
         res.json({ message: "Profile fetched successfully", data: {
             firstName: user.firstName,
             lastName: user.lastName,
@@ -31,4 +18,27 @@ const profile = (async (req, res) => {
     }
 });
 
-module.exports = { profile };
+const editProfile = (async (req, res) => {
+    try{
+        const user = req.user;
+        const fields = ["firstName", "lastName", "age", "gender", "skills"];
+        fields.forEach(field => {
+            if(req.body[field]){
+                user[field] = req.body[field];
+            }
+        });
+        await user.save();
+        res.json({ message: "Profile updated successfully", data: {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            age: user.age,
+            gender: user.gender,
+            skills: user.skills
+        } });
+    } catch(error) {
+        console.error("Error updating user profile:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+module.exports = { viewProfile, editProfile };

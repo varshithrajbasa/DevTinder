@@ -41,12 +41,9 @@ const userSchema = new mongoose.Schema({
     gender: {
         type: String,
         required: [true, 'Gender is required'],
-         validate : {
-            validator: function(val) {
-                if(!["Male", "Female", "Other"].includes(val)){
-                    throw new Error("Invalid Gender");
-                }
-            }
+        enum: {
+            values: ['Male', 'Female', 'Other'], 
+            message: '{VALUE} is not supported'
         }
     },
     skills: {

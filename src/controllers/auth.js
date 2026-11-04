@@ -34,8 +34,15 @@ const signup = async (req, res) => {
             gender,
             skills,
         });
-        await User.save();
-        res.status(201).json(user);
+        await user.save();
+        res.status(201).json({
+            firstName: user.firstName,
+            lastName: user.lastName,
+            emailId: user.emailId,
+            age: user.age,
+            gender: user.gender,
+            skills: user.skills,
+        });
     } catch (err) {
         console.error("Error saving user:", err);
         if (err.code === 11000) {
@@ -81,6 +88,6 @@ const login = async (req, res) => {
 const logout = (req, res) => {
     res.clearCookie("token");
     res.json({ message: "Logout successful" });
-}
+};
 
 module.exports = { signup, login, logout };

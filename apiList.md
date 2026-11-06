@@ -10,7 +10,7 @@
 | PATCH  | /profile/password                  | Change the current user's password              |
 | POST   | /request/send/:status/:userId      | Send a connection request to a user             |
 | POST   | /request/review/:status/:requestId | Accept or Reject an incoming connection request |
-| GET    | /connections                       | List the current user's connections             |
-| GET    | /requests/received                 | List incoming connection requests               |
-| GET    | /feed                              | Get users to browse                             |
-| GET    | /api/status                        | Check the API server status                     |
+| GET    | /user/connections                  | List the current user's connections             |
+| GET    | /user/requests/received            | List incoming connection requests               |
+| GET    | /user/feed                         | Get users to browse                             |
+| GET    | /status                            | Check the API server status                     |

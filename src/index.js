@@ -7,6 +7,7 @@ const authRoutes = require("./routes/auth");
 const authMiddleware = require("./middleware/auth");
 const profileRoutes = require("./routes/profile");
 const requestRoutes = require("./routes/request");
+const userRoutes = require("./routes/user");
 
 const app = express();
 app.use(express.json());
@@ -21,6 +22,7 @@ app.use("/auth", authRoutes);
 app.use(authMiddleware);
 app.use("/profile", profileRoutes);
 app.use("/request", requestRoutes);
+app.use("/user", userRoutes);
 
 connectDB()
     .then(() => {

@@ -1,4 +1,4 @@
-const { viewProfile, editProfile } = require("../controllers/users");
+const { viewProfile, editProfile } = require("../controllers/profile");
 const router = require("express").Router();
 
 router.get("/view", viewProfile);

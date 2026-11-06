@@ -5,7 +5,7 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const authRoutes = require("./routes/auth");
 const authMiddleware = require("./middleware/auth");
-const userRoutes = require("./routes/users");
+const profileRoutes = require("./routes/profile");
 const requestRoutes = require("./routes/request");
 
 const app = express();
@@ -17,8 +17,9 @@ app.get("/api/status", (req, res) => {
 });
 
 app.use("/auth", authRoutes);
+
 app.use(authMiddleware);
-app.use("/profile", userRoutes);
+app.use("/profile", profileRoutes);
 app.use("/request", requestRoutes);
 
 connectDB()

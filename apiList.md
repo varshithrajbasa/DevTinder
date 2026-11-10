@@ -1,16 +1,17 @@
-# DevTinder APIs
+# DevTinder API
 
-| Method | Route                              | Comments                                        |
-| ------ | ---------------------------------- | ----------------------------------------------- |
-| POST   | /auth/signup                       | Create a user account                           |
-| POST   | /auth/login                        | Log in a user                                   |
-| POST   | /auth/logout                       | Log out the current user                        |
-| GET    | /profile/view                      | View the current user's profile                 |
-| PATCH  | /profile/edit                      | Update the current user's profile               |
-| PATCH  | /profile/password                  | Change the current user's password              |
-| POST   | /request/send/:status/:userId      | Send a connection request to a user             |
-| POST   | /request/review/:status/:requestId | Accept or Reject an incoming connection request |
-| GET    | /user/connections                  | List the current user's connections             |
-| GET    | /user/requests/received            | List incoming connection requests               |
-| GET    | /user/feed                         | Get users to browse                             |
-| GET    | /status                            | Check the API server status                     |
+Use `http://localhost:3000` as the base URL. Routes under `/profile`, `/request`, and `/user` require the authentication cookie set by `/auth/login`.
+
+| Method | Route | Authentication | Description |
+| ------ | ----- | -------------- | ----------- |
+| GET | `/api/status` | No | Check whether the API is running |
+| POST | `/auth/signup` | No | Create a user account |
+| POST | `/auth/login` | No | Log in and set the authentication cookie |
+| POST | `/auth/logout` | No | Clear the authentication cookie |
+| GET | `/profile/view` | Yes | View the current user's profile |
+| PATCH | `/profile/edit` | Yes | Update the current user's profile |
+| POST | `/request/send/:status/:toUserId` | Yes | Send a connection request (`interested` or `ignored`) |
+| POST | `/request/review/:status/:requestId` | Yes | Accept or reject an incoming request (`accepted` or `rejected`) |
+| GET | `/user/connections` | Yes | List the current user's accepted connections |
+| GET | `/user/requests/received` | Yes | List incoming interested requests |
+| GET | `/user/feed` | Yes | Get users to browse; accepts optional `page` and `limit` query parameters |

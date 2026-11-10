@@ -51,12 +51,17 @@ const getConnectionRequests = async (req, res) => {
 const getFeed = async (req, res) => {
     try {
         const userId = req.user._id;
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) > 50 ? 50 : parseInt(req.query.limit) || 10;
         const hideUsers = await getUserConnections(userId);
         const users = await User.find({
             _id: {
                 $nin: [...hideUsers.map((user) => user._id), userId],
             },
-        }).select(USER_FIELDS.join(" "));
+        })
+            .select(USER_FIELDS.join(" "))
+            .skip((page - 1) * limit)
+            .limit(limit);
         res.json({ users: users });
     } catch (error) {
         res.status(500).json({ message: error.message });

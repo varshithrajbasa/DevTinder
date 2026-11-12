@@ -4,7 +4,7 @@ const User = require("../models/user");
 const viewProfile = (async (req, res) => {
     try {
         const user = req.user;
-        res.json({ message: "Profile fetched successfully", data: {
+        res.json({ message: "Profile fetched successfully", user: {
             firstName: user.firstName,
             lastName: user.lastName,
             emailId: user.emailId,
@@ -28,7 +28,7 @@ const editProfile = (async (req, res) => {
             }
         });
         await user.save();
-        res.json({ message: "Profile updated successfully", data: {
+        res.json({ message: "Profile updated successfully", user: {
             firstName: user.firstName,
             lastName: user.lastName,
             age: user.age,

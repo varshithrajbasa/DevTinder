@@ -70,7 +70,7 @@ const login = async (req, res) => {
         }); // 8 hours
         res.json({
             message: "Login successful",
-            data: {
+            user: {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 emailId: user.emailId,

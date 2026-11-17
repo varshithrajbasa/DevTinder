@@ -27,13 +27,17 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Password is required'],
     },
-    age: {
+    yearOfBirth: {
         type: Number,
-        required: [true, 'Age is required'],
-        validate : {
-            validator: function(age) {
-                if(age < 18){
-                    throw new Error("Should be greater than 18 years")
+        required: [true, 'Year of birth is required'],
+        validate: {
+            validator: function (year) {
+                const currentYear = new Date().getFullYear();
+                const age = currentYear - year;
+                if (age <= 10) {
+                    throw new Error("Age must be greater than 10");
+                } else if (age > 80) {
+                    throw new Error("Age cannot exceed 80 years");
                 }
             }
         }
@@ -42,7 +46,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Gender is required'],
         enum: {
-            values: ['Male', 'Female', 'Other'], 
+            values: ['Male', 'Female', 'Other'],
             message: '{VALUE} is not supported'
         }
     },
@@ -51,22 +55,30 @@ const userSchema = new mongoose.Schema({
     }
 }, {
     timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
 });
 
-userSchema.methods.getToken = async function() {
+userSchema.virtual("age").get(function () {
+    if (!this.yearOfBirth) return undefined;
+    const currentYear = new Date().getFullYear();
+    return currentYear - this.yearOfBirth;
+});
+
+userSchema.methods.getToken = async function () {
     const user = this;
     return await jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
         expiresIn: "8h",
     });
 }
 
-userSchema.methods.validatePassword = async function(password) {
+userSchema.methods.validatePassword = async function (password) {
     const user = this;
     return await bcrypt.compare(password, user.password);
 }
 
 
 
-const User= mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;

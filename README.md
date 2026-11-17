@@ -63,9 +63,9 @@ The API accepts JSON request bodies. Use `http://localhost:3000` as the base URL
 | `GET` | `/user/requests/received` | Yes | List incoming interested requests |
 | `GET` | `/user/feed` | Yes | Browse users, with optional `page` and `limit` query parameters |
 
-Signup requires `firstName`, `lastName`, `emailId`, `password`, `age`, and `gender`. The supported gender values are `Male`, `Female`, and `Other`; `skills` is optional.
+Signup requires `firstName`, `lastName`, `emailId`, `password`, `yearOfBirth`, and `gender`. The supported gender values are `Male`, `Female`, and `Other`; `skills` is optional.
 
-Profile edits accept `firstName`, `lastName`, `age`, `gender`, and `skills`. The feed defaults to page 1 with 10 users per page and caps the page size at 50.
+Profile edits accept `firstName`, `lastName`, `yearOfBirth`, `gender`, and `skills`. The feed defaults to page 1 with 10 users per page and caps the page size at 50.
 
 For the API route list, see [apiList.md](./apiList.md).
 

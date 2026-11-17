@@ -4,14 +4,14 @@ const bcrypt = require("bcrypt");
 
 const signup = async (req, res) => {
     try {
-        const { firstName, lastName, emailId, password, age, gender, skills } =
+        const { firstName, lastName, emailId, password, yearOfBirth, gender, skills } =
             req.body;
         const requiredFields = [
             "firstName",
             "lastName",
             "emailId",
             "password",
-            "age",
+            "yearOfBirth",
             "gender",
         ];
         if (!validation(req.body, requiredFields)) {
@@ -30,7 +30,7 @@ const signup = async (req, res) => {
             lastName,
             emailId,
             password: hashedPassword,
-            age,
+            yearOfBirth,
             gender,
             skills,
         });
@@ -39,14 +39,17 @@ const signup = async (req, res) => {
             firstName: user.firstName,
             lastName: user.lastName,
             emailId: user.emailId,
-            age: user.age,
+            yearOfBirth: user.yearOfBirth,
             gender: user.gender,
             skills: user.skills,
         });
     } catch (err) {
         console.error("Error saving user:", err);
         if (err.code === 11000) {
-            res.status(400).json({ message: "Email Already exists" });
+            return res.status(400).json({ message: "Email Already exists" });
+        }
+        if (err.name === "ValidationError") {
+            return res.status(400).json({ message: err.message });
         }
         res.status(500).json({ message: "Internal Server Error" });
     }
@@ -74,7 +77,7 @@ const login = async (req, res) => {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 emailId: user.emailId,
-                age: user.age,
+                yearOfBirth: user.yearOfBirth,
                 gender: user.gender,
                 skills: user.skills,
             },

@@ -10,6 +10,7 @@ Use `http://localhost:3000` as the base URL. Routes under `/profile`, `/request`
 | POST | `/auth/logout` | No | Clear the authentication cookie |
 | GET | `/profile/view` | Yes | View the current user's profile |
 | PATCH | `/profile/edit` | Yes | Update the current user's profile |
+| PATCH | `/profile/password/update` | Yes | Update the current user's password |
 | POST | `/request/send/:status/:toUserId` | Yes | Send a connection request (`interested` or `ignored`) |
 | POST | `/request/review/:status/:requestId` | Yes | Accept or reject an incoming request (`accepted` or `rejected`) |
 | GET | `/user/connections` | Yes | List the current user's accepted connections |

@@ -37,6 +37,7 @@ const editProfile = (async (req, res) => {
             message: "Profile updated successfully", user: {
                 firstName: user.firstName,
                 lastName: user.lastName,
+                emailId: user.emailId,
                 yearOfBirth: user.yearOfBirth,
                 gender: user.gender,
                 skills: user.skills,

@@ -50,6 +50,10 @@ const userSchema = new mongoose.Schema({
             message: '{VALUE} is not supported'
         }
     },
+    isVerified: {
+        type: Boolean,
+        value: false
+    },
     skills: {
         type: Array
     }

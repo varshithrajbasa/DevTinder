@@ -13,6 +13,7 @@ const viewProfile = (async (req, res) => {
                 yearOfBirth: user.yearOfBirth,
                 gender: user.gender,
                 skills: user.skills,
+                about: user.about,
                 isVerified: user.isVerified
             }
         });
@@ -25,7 +26,7 @@ const viewProfile = (async (req, res) => {
 const editProfile = (async (req, res) => {
     try {
         const user = req.user;
-        const fields = ["firstName", "lastName", "yearOfBirth", "gender", "skills"];
+        const fields = ["firstName", "lastName", "yearOfBirth", "gender", "skills", "about"];
         fields.forEach(field => {
             if (req.body[field] !== undefined) {
                 user[field] = req.body[field];
@@ -39,6 +40,7 @@ const editProfile = (async (req, res) => {
                 yearOfBirth: user.yearOfBirth,
                 gender: user.gender,
                 skills: user.skills,
+                about: user.about,
                 isVerified: user.isVerified
             }
         });

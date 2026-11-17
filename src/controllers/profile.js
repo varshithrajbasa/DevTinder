@@ -12,7 +12,8 @@ const viewProfile = (async (req, res) => {
                 emailId: user.emailId,
                 yearOfBirth: user.yearOfBirth,
                 gender: user.gender,
-                skills: user.skills
+                skills: user.skills,
+                isVerified: user.isVerified
             }
         });
     } catch (error) {
@@ -37,7 +38,8 @@ const editProfile = (async (req, res) => {
                 lastName: user.lastName,
                 yearOfBirth: user.yearOfBirth,
                 gender: user.gender,
-                skills: user.skills
+                skills: user.skills,
+                isVerified: user.isVerified
             }
         });
     } catch (error) {

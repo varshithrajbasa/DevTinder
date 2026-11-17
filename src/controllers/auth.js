@@ -15,11 +15,11 @@ const signup = async (req, res) => {
             "gender",
         ];
         if (!validation(req.body, requiredFields)) {
-            return res.status(400).json({ error: "Missing required fields" });
+            return res.status(400).json({ message: "Missing required fields" });
         }
         const isUserExists = await User.findOne({ emailId });
         if (isUserExists) {
-            return res.status(400).json({ error: "User already exists" });
+            return res.status(400).json({ message: "User already exists" });
         }
         const hashedPassword = await bcrypt.hash(
             password,
@@ -46,9 +46,9 @@ const signup = async (req, res) => {
     } catch (err) {
         console.error("Error saving user:", err);
         if (err.code === 11000) {
-            res.status(400).json({ Error: "Email Already exists" });
+            res.status(400).json({ message: "Email Already exists" });
         }
-        res.status(500).json({ error: "Internal Server Error" });
+        res.status(500).json({ message: "Internal Server Error" });
     }
 };
 
@@ -57,11 +57,11 @@ const login = async (req, res) => {
         const { emailId, password } = req.body;
         const user = await User.findOne({ emailId });
         if (!user) {
-            return res.status(401).json({ error: "Invalid email or password" });
+            return res.status(401).json({ message: "Invalid email or password" });
         }
         const isMatch = await user.validatePassword(password);
         if (!isMatch) {
-            return res.status(401).json({ error: "Invalid email or password" });
+            return res.status(401).json({ message: "Invalid email or password" });
         }
         const token = await user.getToken();
         res.cookie("token", token, {
@@ -81,7 +81,7 @@ const login = async (req, res) => {
         });
     } catch (err) {
         console.error("Error during login:", err);
-        res.status(500).json({ error: "Internal Server Error" });
+        res.status(500).json({ message: "Internal Server Error" });
     }
 };
 

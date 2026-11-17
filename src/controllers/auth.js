@@ -80,6 +80,7 @@ const login = async (req, res) => {
                 yearOfBirth: user.yearOfBirth,
                 gender: user.gender,
                 skills: user.skills,
+                isVerified: user.isVerified
             },
         });
     } catch (err) {

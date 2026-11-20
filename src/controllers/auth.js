@@ -4,8 +4,15 @@ const bcrypt = require("bcrypt");
 
 const signup = async (req, res) => {
     try {
-        const { firstName, lastName, emailId, password, yearOfBirth, gender, skills } =
-            req.body;
+        const {
+            firstName,
+            lastName,
+            emailId,
+            password,
+            yearOfBirth,
+            gender,
+            skills,
+        } = req.body;
         const requiredFields = [
             "firstName",
             "lastName",
@@ -35,13 +42,14 @@ const signup = async (req, res) => {
             skills,
         });
         await user.save();
-        res.status(201).json({
-            firstName: user.firstName,
-            lastName: user.lastName,
-            emailId: user.emailId,
-            yearOfBirth: user.yearOfBirth,
-            gender: user.gender,
-            skills: user.skills,
+        const token = await user.getToken();
+        res.cookie("token", token, {
+            httpOnly: true,
+            maxAge: 8 * 60 * 60 * 1000,
+        }); // 8 hours
+        res.json({
+            message: "Signup successful",
+            user: user.getSafeUserData(),
         });
     } catch (err) {
         console.error("Error saving user:", err);
@@ -60,11 +68,15 @@ const login = async (req, res) => {
         const { emailId, password } = req.body;
         const user = await User.findOne({ emailId });
         if (!user) {
-            return res.status(401).json({ message: "Invalid email or password" });
+            return res
+                .status(401)
+                .json({ message: "Invalid email or password" });
         }
         const isMatch = await user.validatePassword(password);
         if (!isMatch) {
-            return res.status(401).json({ message: "Invalid email or password" });
+            return res
+                .status(401)
+                .json({ message: "Invalid email or password" });
         }
         const token = await user.getToken();
         res.cookie("token", token, {
@@ -73,15 +85,7 @@ const login = async (req, res) => {
         }); // 8 hours
         res.json({
             message: "Login successful",
-            user: {
-                firstName: user.firstName,
-                lastName: user.lastName,
-                emailId: user.emailId,
-                yearOfBirth: user.yearOfBirth,
-                gender: user.gender,
-                skills: user.skills,
-                isVerified: user.isVerified
-            },
+            user: user.getSafeUserData(),
         });
     } catch (err) {
         console.error("Error during login:", err);

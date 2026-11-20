@@ -1,7 +1,7 @@
 const User = require("../models/user");
 const ConnectionRequest = require("../models/connectionRequest");
 
-const USER_FIELDS = ["firstName", "lastName", "yearOfBirth", "gender", "skills", "about", "isVerified"];
+const USER_FIELDS = ["firstName", "lastName", "yearOfBirth", "gender", "skills", "about", "isVerified", "photoUrl"];
 
 const getUserConnections = async (userId, status) => {
     let query = status

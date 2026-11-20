@@ -59,6 +59,11 @@ const userSchema = new mongoose.Schema({
         maxlength: 200,
         trim: true
     },
+    photoUrl: {
+        type: String,
+        maxlength: 200,
+        trim: true
+    },
     skills: {
         type: Array
     }
@@ -86,6 +91,23 @@ userSchema.methods.validatePassword = async function (password) {
     return await bcrypt.compare(password, user.password);
 }
 
+userSchema.methods.getSafeUserData = function () {
+    const user = this;
+    const safeUserFields = [
+        "firstName",
+        "lastName",
+        "emailId",
+        "yearOfBirth",
+        "gender",
+        "skills",
+        "isVerified",
+        "photoUrl",
+        "about",
+    ];
+    const userObj = {};
+    safeUserFields.forEach((f) => (userObj[f] = user[f]));
+    return userObj;
+};
 
 
 const User = mongoose.model("User", userSchema);

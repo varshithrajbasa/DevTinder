@@ -6,16 +6,7 @@ const viewProfile = (async (req, res) => {
     try {
         const user = req.user;
         res.json({
-            message: "Profile fetched successfully", user: {
-                firstName: user.firstName,
-                lastName: user.lastName,
-                emailId: user.emailId,
-                yearOfBirth: user.yearOfBirth,
-                gender: user.gender,
-                skills: user.skills,
-                about: user.about,
-                isVerified: user.isVerified
-            }
+            message: "Profile fetched successfully", user: user.getSafeUserData()
         });
     } catch (error) {
         console.error("Error fetching user profile:", error);
@@ -26,7 +17,7 @@ const viewProfile = (async (req, res) => {
 const editProfile = (async (req, res) => {
     try {
         const user = req.user;
-        const fields = ["firstName", "lastName", "yearOfBirth", "gender", "skills", "about"];
+        const fields = ["firstName", "lastName", "yearOfBirth", "gender", "skills", "about", "photoUrl"];
         fields.forEach(field => {
             if (req.body[field] !== undefined) {
                 user[field] = req.body[field];
@@ -42,7 +33,8 @@ const editProfile = (async (req, res) => {
                 gender: user.gender,
                 skills: user.skills,
                 about: user.about,
-                isVerified: user.isVerified
+                isVerified: user.isVerified,
+                photoUrl: user.photoUrl
             }
         });
     } catch (error) {

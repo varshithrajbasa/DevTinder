@@ -25,17 +25,7 @@ const editProfile = (async (req, res) => {
         });
         await user.save();
         res.json({
-            message: "Profile updated successfully", user: {
-                firstName: user.firstName,
-                lastName: user.lastName,
-                emailId: user.emailId,
-                yearOfBirth: user.yearOfBirth,
-                gender: user.gender,
-                skills: user.skills,
-                about: user.about,
-                isVerified: user.isVerified,
-                photoUrl: user.photoUrl
-            }
+            message: "Profile updated successfully", user: user.getSafeUserData()
         });
     } catch (error) {
         console.error("Error updating user profile:", error);
